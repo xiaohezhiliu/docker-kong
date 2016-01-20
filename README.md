@@ -37,16 +37,16 @@ First, Kong requires a running Cassandra cluster before it starts. You can eithe
 Start a Cassandra container by doing so:
 
 ```shell
-$ docker run -d -p 9042:9042 --name cassandra mashape/cassandra
+$ docker run -d -p 9042:9042 --name cassandra cassandra:2.2.4
 ```
 
 Once Cassandra is running, we can start a Kong container and link it to the Cassandra container:
 
 ```shell
-$ docker run -d -p 8000:8000 -p 8001:8001 --name kong --link cassandra:cassandra mashape/kong
+$ docker run -p 8000:8000 -p 8443:8443 -p 8001:8001 -p 7946:7946 -p 7946:7946/udp -d --name kong --link cassandra:cassandra mashape/kong
 ```
 
-If everything went well, and if you created your container with the default ports, Kong should be listening on your host's `8000` ([proxy][kong-docs-proxy-port]) and `8001` ([admin api][kong-docs-admin-api-port]) ports.
+If everything went well, and if you created your container with the default ports, Kong should be listening on your host's `8000` ([Proxy][kong-docs-proxy-listen]), `8443` ([Proxy SSL][kong-docs-proxy-ssl-listen]) and `8001` ([Admin API][kong-docs-admin-api-listen]) ports. Kong will also listen on port `7946` on both TCP and UDP for intracluster communication ([Cluster][kong-docs-cluster-listen])
 
 You can now read the docs at [getkong.org/docs][kong-docs-url] to learn more about Kong.
 
@@ -58,7 +58,10 @@ This container stores the [Kong configuration file](http://getkong.org/docs/late
 $ docker run -d \
     -v /path/to/your/kong/configuration/directory/:/etc/kong/ \
     -p 8000:8000 \
+    -p 8443:8443 \
     -p 8001:8001 \
+    -p 7946:7946 \
+    -p 7946:7946/udp \
     --name kong \
     mashape/kong
 ```
@@ -89,8 +92,10 @@ Before you start to code, we recommend discussing your plans through a [GitHub i
 
 [kong-site-url]: http://getkong.org
 [kong-docs-url]: http://getkong.org/docs
-[kong-docs-proxy-port]: http://getkong.org/docs/latest/configuration/#proxy_port
-[kong-docs-admin-api-port]: http://getkong.org/docs/latest/configuration/#admin_api_port
+[kong-docs-proxy-listen]: http://getkong.org/docs/latest/configuration/#proxy_listen
+[kong-docs-proxy-ssl-listen]: http://getkong.org/docs/latest/configuration/#proxy_listen_ssl
+[kong-docs-admin-api-listen]: http://getkong.org/docs/latest/configuration/#admin_api_listen
+[kong-docs-cluster-listen]: http://getkong.org/docs/latest/configuration/#cluster_listen
 [kong-docs-reload]: http://getkong.org/docs/latest/cli/#reload
 
 [github-new-issue]: https://github.com/Mashape/docker-kong/issues/new
