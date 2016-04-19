@@ -1,5 +1,5 @@
 postgres:
-  host: "KONG-DATABASE"
+  host: "kong-database"
   port: 32775
   database: kong
   user: kong
