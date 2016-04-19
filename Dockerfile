@@ -17,3 +17,4 @@ RUN chmod +x setup.sh
 CMD ./setup.sh && kong start
 
 EXPOSE 8000 8443 8001 7946
+#FG 111
