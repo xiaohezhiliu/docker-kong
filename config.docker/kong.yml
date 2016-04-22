@@ -1,6 +1,6 @@
 postgres:
-  host: "kong-database"
-  port: 32775
+  host: "postgres-94-opendev.myalauda.cn"
+  port: 10021
   database: kong
   user: kong
 cassandra:
